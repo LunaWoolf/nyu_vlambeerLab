@@ -9,18 +9,95 @@ using UnityEngine;
 // STEP 1: ======================================================================================
 // put this script on a Sphere... it SHOULD move around, and drop a path of floor tiles behind it
 
-public class Pathmaker : MonoBehaviour {
+public class Pathmaker : MonoBehaviour
+{
 
-// STEP 2: ============================================================================================
-// translate the pseudocode below
+	// STEP 2: ============================================================================================
+	// translate the pseudocode below
+	//	DECLARE CLASS MEMBER VARIABLES:
+	//	Declare a private integer called counter that starts at 0; 		// counter will track how many floor tiles I've instantiated
+	//	Declare a public Transform called floorPrefab, assign the prefab in inspector;
+	//	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
 
-//	DECLARE CLASS MEMBER VARIABLES:
-//	Declare a private integer called counter that starts at 0; 		// counter will track how many floor tiles I've instantiated
-//	Declare a public Transform called floorPrefab, assign the prefab in inspector;
-//	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
+	private int counter = 0;
+    public Transform floorPrefab01;
+    public Transform floorPrefab02;
+    public Transform floorPrefab03;
+    public Transform pathmakerSpherePrefab;
+    public static int tilesnum = 0;
+    public int water;
+    public int lifeshort;
+    public int lifetime = 50;
+    public static List<Transform> tiles;
 
+    void Start()
+    {
+        water = Random.Range(0, 2);
+        lifeshort = Random.Range(0, 2);
 
-	void Update () {
+        if (lifeshort == 1)
+        {
+            lifetime = 25;
+        }
+
+    }
+
+    void Update ()
+	{
+        if (counter < 50)
+        {
+            float temp = Random.Range(0.0f, 1.0f);
+
+            if (temp < 0.15f)
+            {
+                transform.Rotate(0, 90, 0, Space.Self);
+            }
+            else if (temp > 0.15f && temp < 0.30f)
+            {
+                transform.Rotate(0, -90, 0, Space.Self);
+            }
+            else if (temp > 0.90f)
+            {
+                Instantiate(pathmakerSpherePrefab, transform.position, Quaternion.identity);
+            }
+
+           
+            if (water == 0)
+            {
+                int x = Random.Range(0, 8);
+                if (x == 0)
+                {
+                    Instantiate(floorPrefab02, transform.position, Quaternion.identity);
+                    
+                }
+                else
+                {
+                  Instantiate(floorPrefab01, transform.position, Quaternion.identity);
+                    
+                } 
+            }
+            else
+            {
+               Instantiate(floorPrefab03, transform.position, Quaternion.identity);
+                
+            }
+
+            tilesnum++;
+            transform.position += transform.forward * 5;
+            counter++;
+            
+
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+        if (tilesnum > 500)
+        {
+            Destroy(this.gameObject);
+        }
+
 //		If counter is less than 50, then:
 //			Generate a random number from 0.0f to 1.0f;
 //			If random number is less than 0.25f, then rotate myself 90 degrees;
@@ -51,7 +128,9 @@ public class Pathmaker : MonoBehaviour {
 //      -  What is a 'static'?  Static???  Simply speak the password "static" to the instructor and knowledge will flow.
 //	- Perhaps... if there already are enough tiles maybe the Pathmaker could Destroy my game object
 
-// STEP 4: ======================================================================================
+//_______________________________________________________________________________________________________________________
+
+// STEP 4: ====================================================================================== 
 // tune your values...
 
 // a. how long should a pathmaker live? etc.  (see: static  ---^)
@@ -80,7 +159,7 @@ public class Pathmaker : MonoBehaviour {
 //		- THESE TILES CAN BE BASED ON PAST MODELS YOU'VE MADE, OR NEW.  BUT THEY NEED TO BE UNIQUE TO THIS PROJECT AND CLEARLY TILE-ABLE.
 
 //		- then, add a simple in-game restart button; let us press [R] to reload the scene and see a new level generation
-// - with Text UI, name your proc generation system ("AwesomeGen", "RobertGen", etc.) and display Text UI that tells us we can press [R]
+// - with Text UI, name your proc generation system ("AwesomeGen", "RobertGen", etc.) and display Text UI that tells us we can press [R] 
 
 
 // OPTIONAL EXTRA TASKS TO DO, IF YOU WANT / DARE: ===================================================
